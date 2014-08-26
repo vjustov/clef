@@ -29,6 +29,12 @@ describe(Clef::Models::Note) do
     it("should return a Note") do
       Clef::Models::Note.parse('A3').should be_kind_of(Clef::Models::Note)
     end
+    context("when parsing") do
+      it("should rise or lower the octave based on the commas or apostrophes")
+      it("should match the note length appropriately")
+      it("should understand dotted notes")
+    end
+
     it("should parse valid ABC") do
 
       Clef::Models::Note.parse('A3').should be_kind_of(Clef::Models::Note)
