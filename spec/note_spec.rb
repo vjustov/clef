@@ -12,20 +12,24 @@ describe(Clef::Models::Note) do
       end
 
       it("should have a valid note") do
-        @note.pitch.should eq("C")
+        @note.should respond_to(:pitch)
       end
       it("should have a valid length") do
-        @note.length.should eq("1/4")
+        @note.should respond_to(:length)
       end
 
       it("should have an octave") do
-        @note.octave.should eq(8)
+        @note.should respond_to(:octave)
       end
     end
   end
   describe(".parse") do
-    it("by default, should return a center scale note")
-    it("by default, should return a single quater note")
+    it("by default, should return a center scale note") do
+      Clef::Models::Note.parse('A').octave.should eq(4)
+    end
+    it("by default, should return a single quater note") do
+       Clef::Models::Note.parse('A').length.should eq("1/4")
+    end
     it("should return a Note") do
       Clef::Models::Note.parse('A3').should be_kind_of(Clef::Models::Note)
     end
@@ -33,13 +37,6 @@ describe(Clef::Models::Note) do
       it("should rise or lower the octave based on the commas or apostrophes")
       it("should match the note length appropriately")
       it("should understand dotted notes")
-    end
-
-    it("should parse valid ABC") do
-
-      Clef::Models::Note.parse('A3').should be_kind_of(Clef::Models::Note)
-      Clef::Models::Note.parse('A/2').should be_kind_of(Clef::Models::Note)
-      Clef::Models::Note.parse('a3').should be_kind_of(Clef::Models::Note)
     end
 
     it("should error when input is invalid")
