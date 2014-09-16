@@ -31,6 +31,20 @@ module Clef
         Note.new pitch, nil, octave
       end
     end
+    class Song
+      attr_accessor :header, :body
+
+      def initialize string
+        @header = {}
+        string.each_line do |l|
+          l.strip!
+          pair = l.split(':')
+          key = pair[0]
+          value = pair[1]
+          @header[key] = value
+        end
+      end
+    end
   end
 end
 
