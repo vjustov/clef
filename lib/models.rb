@@ -20,8 +20,26 @@ module Clef
       end
 
       def self.parse note
-        Note.new note
+        pitch = note[0].upcase
+        octave = note[0].lowercase? ? 5 : 4
+        offsets = /[A-Ga-g]([',]+)/.match(note)
+        if offsets
+          offsets = offsets.captures[0]
+          octave_offset = offsets[0].eql?(',') ? -offsets.length : offsets.length
+          octave = octave + octave_offset
+        end
+        Note.new pitch, nil, octave
       end
     end
+  end
+end
+
+class String
+  def lowercase?
+    self.downcase == self
+  end
+
+  def uppercase?
+    self.upcase == self
   end
 end

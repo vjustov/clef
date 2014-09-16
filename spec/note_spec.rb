@@ -28,13 +28,17 @@ describe(Clef::Models::Note) do
       Clef::Models::Note.parse('A').octave.should eq(4)
     end
     it("by default, should return a single quater note") do
-       Clef::Models::Note.parse('A').length.should eq("1/4")
+      Clef::Models::Note.parse('A').length.should eq("1/4")
     end
     it("should return a Note") do
       Clef::Models::Note.parse('A3').should be_kind_of(Clef::Models::Note)
     end
     context("when parsing") do
-      it("should rise or lower the octave based on the commas or apostrophes")
+      it("should rise or lower the octave based on the commas or apostrophes") do
+        Clef::Models::Note.parse("A''").octave.should eq(6)
+        Clef::Models::Note.parse('A,,').octave.should eq(2)
+        Clef::Models::Note.parse("A''''").octave.should eq(8)
+      end
       it("should match the note length appropriately")
       it("should understand dotted notes")
     end
