@@ -36,7 +36,8 @@ module Clef
 
       def initialize string
         @header = {}
-        string.each_line do |l|
+        fields = string.scan /^[A-Z]:.*$/
+        fields.each do |l|
           l.strip!
           pair = l.split(':')
           key = pair[0]
