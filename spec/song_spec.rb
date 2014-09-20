@@ -11,7 +11,7 @@ describe(Clef::Models::Song) do
   it("should have a body")
   describe("Song.header") do
     let(:data) do
-      <<-EOT
+      <<-EOT.gsub(/^ +/, '')
       X:1
       T:Paddy O'Rafferty
       C:Trad.
@@ -25,8 +25,18 @@ describe(Clef::Models::Song) do
 
     it "should parse a header" do
       val = Clef::Models::Song.new data
-      puts val.header
+      puts val.header, data
       val.header["X"].should eq("1")
+    end
+
+    it "should parse the body" do
+      val = Clef::Models::Song.new data
+      data_body = <<-EOT.gsub(/^ +/, '')
+      dff cee|def gfe|dff cee|dfe dBA|dff cee|def gfe|faf gfe|1 dfe dBA:|2 dfe dcB|]
+      ~A3 B3|gfe fdB|AFA B2c|dfe dcB|~A3 ~B3|efe efg|faf gfe|1 dfe dcB:|2 dfe dBA|]
+      fAA eAA|def gfe|fAA eAA|dfe dBA|fAA eAA|def gfe|faf gfe|dfe dBA:|
+      EOT
+      val.body.should eq(data_body)
     end
   end
 end

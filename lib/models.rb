@@ -44,6 +44,8 @@ module Clef
           value = pair[1]
           @header[key] = value
         end
+        body = /^K:.$.(.*)/m.match(string)
+        @body = body ? body.captures[0] : ""
       end
     end
   end
