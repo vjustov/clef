@@ -39,18 +39,27 @@ module Clef
     class Song
       attr_accessor :header, :body
 
-      def initialize string
+      def initialize(string="")
         @header = {}
+        parse_header string
+        parse_body string
+      end
+
+      def default_length
+      end
+
+      private
+      def parse_header string
         fields = string.scan /^[A-Z]:.*$/
-        fields.each do |l|
-          l.strip!
-          pair = l.split(':')
-          key = pair[0]
-          value = pair[1]
+        fields.each do |line|
+         key, value = line.strip.split(':')
           @header[key] = value
         end
-        body = /^K:.$.(.*)/m.match(string)
-        @body = body ? body.captures[0] : ""
+      end
+
+      def parse_body string
+        match = /^K:.$.(.*)/m.match(string)
+        @body = match ? match.captures[0] : ""
       end
     end
   end
