@@ -1,48 +1,21 @@
 require 'spec_helper.rb'
 
 describe(Clef::Models::Note) do
-  describe("when creating a note") do
-    context("with valid parameters") do
-      before :all do
-        @note = Clef::Models::Note.new "C"
-      end
-
-      it("should create a Note object") do
-        @note.should be_a_kind_of(Clef::Models::Note)
-      end
-
-      it("should have a valid note") do
-        @note.should respond_to(:pitch)
-      end
-      it("should have a valid length") do
-        @note.should respond_to(:length)
-      end
-
-      it("should have an octave") do
-        @note.should respond_to(:octave)
-      end
-    end
+  let(:note) { Clef::Models::Note.new pitch: "C", length: "2" }
+  let(:song_note) { Clef::Models::Note.new pitch: "C", length: 2, parent_song: stubbed_song }
+  it "has a pitch" do
+    expect(note.pitch).to eq("C")
   end
-  describe(".parse") do
-    it("by default, should return a center scale note") do
-      Clef::Models::Note.parse('A').octave.should eq(4)
-    end
-    it("by default, should return a single quater note") do
-      Clef::Models::Note.parse('A').length.should eq("1/4")
-    end
-    it("should return a Note") do
-      Clef::Models::Note.parse('A3').should be_kind_of(Clef::Models::Note)
-    end
-    context("when parsing") do
-      it("should rise or lower the octave based on the commas or apostrophes") do
-        Clef::Models::Note.parse("A''").octave.should eq(6)
-        Clef::Models::Note.parse('A,,').octave.should eq(2)
-        Clef::Models::Note.parse("A''''").octave.should eq(8)
-      end
-      it("should match the note length appropriately")
-      it("should understand dotted notes")
-    end
+  it "has a parent song" do
+    expect(note).to respond_to(:parent_song)
+    expect(note.parent_song).to be_kind_of(Clef::Models::Song)
+  end
+  it "has a length" do
+    song = instance_double("Clef::Models::Song")
+    allow(song).to receive(:default_length) { "1/8".to_r }
 
-    it("should error when input is invalid")
+    other_note = Clef::Models::Note.new pitch: "C", length: 2, parent_song: song
+    expect(other_note).to respond_to(:length)
+    expect(other_note.length).to eq("1/4".to_r)
   end
 end

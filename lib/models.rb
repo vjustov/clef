@@ -1,10 +1,11 @@
 module Clef
   module Models
     class Note
-      def initialize note, length = nil, octave = nil
-        @pitch = note
-        @length = length ? length : '1/4'
-        @octave = octave ? octave : 4
+      def initialize pitch:, length: 2, octave: 4, parent_song: Song.new
+        @pitch = pitch
+        @length = length
+        @octave = octave
+        @parent_song = parent_song
       end
 
       def pitch
@@ -12,11 +13,15 @@ module Clef
       end
 
       def length
-        @length
+        @length.to_r * @parent_song.default_length
       end
 
       def octave
         @octave
+      end
+
+      def parent_song
+        @parent_song
       end
 
       def self.parse note
